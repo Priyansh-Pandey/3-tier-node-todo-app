@@ -30,3 +30,21 @@ A feature-rich ToDo application with reminders, task status management, and Mong
 
 ## 🧱 Folder Structure
 
+
+project/
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── README.md
+├── backend/
+│ ├── app.js
+│ ├── package.json
+│ ├── .env.sample
+│ ├── routes/
+│ │ └── todos.js
+│ └── models/
+│ └── todo.js
+└── frontend/
+├── index.html
+└── script.js
+
