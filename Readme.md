@@ -74,7 +74,6 @@ Built and pushed via GitHub Actions CI/CD.
 ```bash
 git clone https://github.com/Priyansh-Pandey/3-tier-node-todo-app.git
 cd 3-tier-node-todo-app
-cp backend/.env.sample backend/.env  # Update with your Mongo URI
 docker compose up --build
 
 
