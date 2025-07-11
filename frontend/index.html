@@ -1,0 +1,25 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced ToDo App</title>
+</head>
+<body>
+  <h1>ToDo List</h1>
+  <input id="title" placeholder="Title" />
+  <input id="desc" placeholder="Description" />
+  <input id="due" type="datetime-local" />
+  <input id="reminder" type="datetime-local" />
+  <select id="status">
+    <option value="pending">Pending</option>
+    <option value="in-progress">In Progress</option>
+    <option value="completed">Completed</option>
+  </select>
+  <button onclick="addTodo()">Add Task</button>
+
+  <ul id="todoList"></ul>
+
+  <script src="script.js"></script>
+</body>
+</html>
