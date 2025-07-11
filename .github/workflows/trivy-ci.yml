@@ -1,0 +1,29 @@
+name: DevSecOps CI - Trivy Scan
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker Image
+      run: docker build -t project-todo-app:ci -f Dockerfile .
+
+    - name: Install Trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: image
+        image-ref: project-todo-app:ci
+        ignore-unfixed: true
+        severity: CRITICAL,HIGH
