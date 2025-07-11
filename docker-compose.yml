@@ -10,7 +10,7 @@ services:
       - mongo-data:/data/db
 
   todo-app:
-    build: .
+    image: priyansh26/3-tier-todo-app:v.1
     ports:
       - "3000:3000"
     environment:
