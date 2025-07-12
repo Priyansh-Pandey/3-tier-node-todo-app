@@ -15,6 +15,7 @@ FROM node:18-alpine
 WORKDIR /app
 COPY --from=backend /app /app
 COPY --from=frontend /frontend /app/public
+USER node
 
 EXPOSE 3000
 CMD ["node", "app.js"]
