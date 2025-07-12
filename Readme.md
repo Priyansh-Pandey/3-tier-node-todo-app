@@ -63,7 +63,7 @@ project/
 
 ## 🚀 Docker Hub
 
-Latest image: [`priyanshpandey/todo-app:latest`](https://hub.docker.com/repository/docker/priyanshpandey/todo-app)
+Latest image: [`priyansh26/todo-app:latest`](https://hub.docker.com/repository/docker/priyansh26/todo-app/)
 
 Built and pushed via GitHub Actions CI/CD.
 
