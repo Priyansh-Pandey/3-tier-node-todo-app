@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        SONAR_HOME = tool "sonar"
+    }
+
+    stages {
+        stage("Clone the repo from git") {
+            steps {
+                git url: "https://github.com/Priyansh-Pandey/3-tier-node-todo-app.git", branch: "master"
+            }
+        }
+
+        stage("SonarQube QA") {
+            steps {
+                withSonarQubeEnv("sonar") {
+                    sh "${SONAR_HOME}/bin/sonar-scanner -Dsonar.projectName=DevSec -Dsonar.projectKey=DevSec"
+                }
+            }
+        }
+
+        stage("OWASP Dependency-Check") {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./', odcInstallation: "dc"
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage("Sonar Quality Gates Scan") {
+            steps {
+                timeout(time: 2, unit: "MINUTES") {
+                    waitForQualityGate abortPipeline: false
+                }
+            }
+        }
+
+        stage("Trivy File System Scan") {
+            steps {
+                sh "trivy fs ./ --format table -o trivy-fs-report.html  --exit-code 0 --severity CRITICAL,HIGH"
+            }
+        }
+        stage("deploy with DOcker"){
+            steps{
+                sh "docker compose up --build -d"
+            }
+        }
+    }
+}
