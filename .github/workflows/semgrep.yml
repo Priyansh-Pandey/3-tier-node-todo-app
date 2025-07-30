@@ -12,10 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Run Semgrep (Auto Config)
-      uses: returntocorp/semgrep-action@v1
-      with:
-        config: auto 
+      - name: Set up Python (required for Semgrep sometimes)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Semgrep (Auto Config)
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: auto
