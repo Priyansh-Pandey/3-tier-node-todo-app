@@ -52,7 +52,7 @@ pipeline {
                 sh '''
                     mkdir -p zap-report
                     chmod -R 777  zap-report
-                    docker run --rm --network devsec_default \
+                    docker run --rm --network project_zapnet \
                         -v $(pwd)/zap-report:/zap/wrk/:rw \
                          zaproxy/zap-stable  \
                          zap-baseline.py -t http://todo-app:3000 \
