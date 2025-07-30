@@ -3,6 +3,7 @@ pipeline {
     agent any
 
 
+
     environment {
 
         SONAR_HOME = tool "sonar"
@@ -10,9 +11,10 @@ pipeline {
     }
 
 
+
     stages {
 
-        stage("Clone the repo from git") {
+        stage("Clone the repo from Git") {
 
             steps {
 
@@ -21,6 +23,7 @@ pipeline {
             }
 
         }
+
 
 
         stage("SonarQube QA") {
@@ -38,6 +41,7 @@ pipeline {
         }
 
 
+
         stage("OWASP Dependency-Check") {
 
             steps {
@@ -49,6 +53,7 @@ pipeline {
             }
 
         }
+
 
 
         stage("Sonar Quality Gates Scan") {
@@ -66,15 +71,17 @@ pipeline {
         }
 
 
+
         stage("Trivy File System Scan") {
 
             steps {
 
-                sh "trivy fs ./ --format table -o trivy-fs-report.html  --exit-code 0 --severity CRITICAL,HIGH"
+                sh "trivy fs ./ --format table -o trivy-fs-report.html --exit-code 0 --severity CRITICAL,HIGH"
 
             }
 
         }
+
 
 
         stage("Deploy with Docker") {
@@ -88,21 +95,24 @@ pipeline {
         }
 
 
+
         stage("ZAP DAST Scan") {
 
             steps {
 
                 sh '''
 
-                docker run --rm --network zapnet \
+                    mkdir -p zap-report
 
-                    -v $WORKSPACE:/zap/wrk/:rw \
+                    docker run --rm --network devsec_zapnet \
 
-                    owasp/zap2docker-stable zap-baseline.py \
+                        -v $(pwd)/zap-report:/zap/reports \
 
-                    -t http://todo-app:3000 \
+                        owasp/zap2docker-stable zap-baseline.py \
 
-                    -r zap-report.html
+                        -t http://todo-app:3000 \
+
+                        -r zap-report.html
 
                 '''
 
@@ -111,11 +121,12 @@ pipeline {
         }
 
 
+
         stage("Archive ZAP Report") {
 
             steps {
 
-                archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'zap-report/zap-report.html', allowEmptyArchive: true
 
             }
 
